@@ -1,13 +1,33 @@
+var version = "?v=1.0";
+
 var webpack = require("webpack");
 var path = require('path');
 var APP_DIR = path.resolve(__dirname, 'app/');
 var BUILD_DIR = path.resolve(__dirname, 'dist/');
 var MODULE_DIR = path.resolve(APP_DIR, 'modules/');
 var SASS_DIR = path.resolve(APP_DIR, 'sass/');
+var TEMPLATE_DIR = path.resolve(APP_DIR, 'templates/');
+
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var cssFiles = 'app.bundle.css' + version;
+var extractCSS = new ExtractTextPlugin({filename:cssFiles});
+
+var ugilfy = new UglifyJsPlugin({
+    uglifyOptions: {
+        compress: true
+    }
+});
+
+
+var assembleHTML = new HtmlWebpackPlugin({
+    title:"Spotify and React",
+    template: TEMPLATE_DIR + '/boilerplate.html'
+});
 
 var StylesArray = [];
-StylesArray.push({loader: "css-loader"});
+StylesArray.push({loader: "css-loader", options: { minimize: true } });
 StylesArray.push({loader: "sass-loader",options: {includePaths: [SASS_DIR]}});
 
 module.exports = {
@@ -39,7 +59,7 @@ module.exports = {
 			},
         	{
             	test: /\.scss$/,
-            	use: ExtractTextPlugin.extract({
+            	use: extractCSS.extract({
             		fallback:'style-loader',
             		 use: StylesArray
             	})
@@ -47,6 +67,8 @@ module.exports = {
         ]
     },
      plugins: [
-        new ExtractTextPlugin({filename:'app.bundle.css'})
+        extractCSS,
+        assembleHTML,
+        ugilfy
     ]
 }
