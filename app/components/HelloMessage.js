@@ -1,17 +1,39 @@
 import React from 'react';
 import $ from 'jquery';
+import {Login} from './Login';
  
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			hastoken:null
+		};
 	}
-	render() {
-	    return (
+	componentDidMount() {
+		
+	}
+	showLogin(){
+		return (
+			<div>
+	    	<Login />
+	    	</div>
+	    )
+	}
+	showApp(){
+		return (
 	    	<div>
 	    	<HelloMessage name={this.props.name}/>
 	    	<Hey  name={this.props.name}/>
 	    	</div>
 	    )
+	}
+	render() {
+	    if(this.state.hastoken!=null){
+	    	return this.showApp()
+	    }
+	    else{
+	    	return this.showLogin()
+	    }
   }
 }
 
