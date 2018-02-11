@@ -1,5 +1,12 @@
-var version = "?v=1.0";
-var dev=true;
+//cycles through the process arguments
+var dev=false;
+for( var p in process.argv){
+    if(Boolean(String(process.argv[p]).match(/env\.dev/))){
+        dev = true;
+    }
+}
+console.log("Development Environment " + dev);
+
 var webpack = require("webpack");
 var path = require('path');
 var APP_DIR = path.resolve(__dirname, 'app/');
@@ -10,6 +17,8 @@ var TEMPLATE_DIR = path.resolve(APP_DIR, 'templates/');
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+var version = "?v=" + String(Date.now());
 var cssFiles = 'app.bundle.css' + version;
 var extractCSS = new ExtractTextPlugin({filename:cssFiles});
 var ugilfy = null;
@@ -31,12 +40,13 @@ var assembleHTML = new HtmlWebpackPlugin({
 });
 
 var StylesArray = [];
-StylesArray.push({loader: "css-loader", options: { minimize: true } });
+StylesArray.push({loader: "css-loader", options: { minimize: !dev } });
 StylesArray.push({loader: "sass-loader",options: {includePaths: [SASS_DIR]}});
 
 var pluginsList = [];
 pluginsList.push(extractCSS);
 pluginsList.push(assembleHTML);
+
 if(!dev){
     pluginsList.push(ugilfy);
 }

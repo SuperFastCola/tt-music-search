@@ -1,16 +1,15 @@
 import React from 'react';
 import $ from 'jquery';
-import {Login} from './Login';
+import Login from './Login';
+import {connect} from 'react-redux';
+import { createStore } from "redux";
  
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			hastoken:null
-		};
 	}
 	componentDidMount() {
-		
+		console.log(this.props);
 	}
 	showLogin(){
 		return (
@@ -28,7 +27,9 @@ class App extends React.Component {
 	    )
 	}
 	render() {
-	    if(this.state.hastoken!=null){
+		console.log("main");
+		console.log(this.props);
+	    if(this.props.token!=null){
 	    	return this.showApp()
 	    }
 	    else{
@@ -49,5 +50,10 @@ class Hey extends React.Component {
   }
 };
 
+const mapStateToProps = function(state){
+	console.log("Main");
+	console.log(state);
+	return state;	
+}
 
-export {App};
+export default connect(mapStateToProps)(App)
