@@ -1,28 +1,32 @@
 import React from 'react';
 import $ from 'jquery';
-import Login from './Login';
-import { createStore } from "redux";
-import {connect} from 'react-redux';
-import rootReducer from "../reducers/Spotify";
-import setToken from "../actions";
+import {Login} from './Login';
  
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			token:this.props.token,
+			auth: this.props.auth
+		}
 	}
 	componentDidMount() {
 		this.parseToken();
 	}
+	componentDidCatch(error, info) {
+		console.log(error)
+		console.log(info)
+	}
 	parseToken(){
 		let token = String(window.location.href).match(/access_token=(.*)&token_type/);
 		if(token != null){
-			this.props.setTheToken(token[1]);
+			this.setState({token:token[1]});
 		}	
 	}
 	showLogin(){
 		return (
 			<div>
-	    	<Login />
+	    	<Login auth={this.props.auth}/>
 	    	</div>
 	    )
 	}
@@ -35,7 +39,7 @@ class App extends React.Component {
 	    )
 	}
 	render() {
-	    if(this.props.info.token!=null){
+	    if(this.state.token!=null){
 	    	return this.showApp()
 	    }
 	    else{
@@ -56,20 +60,4 @@ class Hey extends React.Component {
   }
 };
 
-const mapStateToProps = function(state){
-	return {"info":state};		
-}
-
- const mapDispatchToProps = function(dispatch) {
-    return({
-        setTheToken: (token) => {
-        	dispatch({type:"SET_TOKEN","token":token})
-        },
-        errorAlert: () => {
-        	dispatch({type:"ALL"})
-        }
-    })
-}
-
-
-export default connect(mapStateToProps,mapDispatchToProps)(App)
+export {App}

@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/Main';
-import {Provider} from 'react-redux';
-import { createStore } from "redux";
-import rootReducer from "./reducers/Spotify";
+import {App} from './components/Main';
 import 'styles';
 
 let initiailState = {
@@ -20,11 +17,7 @@ initiailState.auth.fullurl = initiailState.auth.url +"?client_id="+initiailState
 initiailState.auth.fullurl+= "&redirect_uri="+initiailState.auth.redirect_uri;
 initiailState.auth.fullurl+= "&response_type="+initiailState.auth.response_type;
 
-let store = createStore(rootReducer,initiailState);
-
 ReactDOM.render(
-	<Provider store={store}>
-    	<App name="Spud"/>
-  	</Provider>, 
+    <App name="Spud" token={initiailState.token} auth={initiailState.auth.fullurl}/>,
 	document.getElementById('app')
 );

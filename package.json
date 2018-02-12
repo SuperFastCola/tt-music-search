@@ -17,8 +17,6 @@
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
     "sass-loader": "^6.0.6",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
@@ -31,7 +29,6 @@
     "css-loader": "^0.28.9",
     "i": "^0.3.6",
     "npm": "^5.6.0",
-    "react-redux": "^5.0.6",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1"
   }
