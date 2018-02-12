@@ -1,15 +1,23 @@
 import React from 'react';
 import $ from 'jquery';
 import Login from './Login';
-import {connect} from 'react-redux';
 import { createStore } from "redux";
+import {connect} from 'react-redux';
+import rootReducer from "../reducers/Spotify";
+import setToken from "../actions";
  
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 	componentDidMount() {
-		console.log(this.props);
+		this.parseToken();
+	}
+	parseToken(){
+		let token = String(window.location.href).match(/access_token=(.*)&token_type/);
+		if(token != null){
+			this.props.setTheToken(token[1]);
+		}	
 	}
 	showLogin(){
 		return (
@@ -27,9 +35,7 @@ class App extends React.Component {
 	    )
 	}
 	render() {
-		console.log("main");
-		console.log(this.props);
-	    if(this.props.token!=null){
+	    if(this.props.info.token!=null){
 	    	return this.showApp()
 	    }
 	    else{
@@ -51,9 +57,19 @@ class Hey extends React.Component {
 };
 
 const mapStateToProps = function(state){
-	console.log("Main");
-	console.log(state);
-	return state;	
+	return {"info":state};		
 }
 
-export default connect(mapStateToProps)(App)
+ const mapDispatchToProps = function(dispatch) {
+    return({
+        setTheToken: (token) => {
+        	dispatch({type:"SET_TOKEN","token":token})
+        },
+        errorAlert: () => {
+        	dispatch({type:"ALL"})
+        }
+    })
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App)
