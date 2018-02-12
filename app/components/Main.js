@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import {Login} from './Login';
+import {Login,Search} from './Elements';
  
 class App extends React.Component {
 	constructor(props) {
@@ -26,15 +26,14 @@ class App extends React.Component {
 	showLogin(){
 		return (
 			<div>
-	    	<Login auth={this.props.auth}/>
+	    	<Login auth={this.state.auth}/>
 	    	</div>
 	    )
 	}
 	showApp(){
 		return (
 	    	<div>
-	    	<HelloMessage name={this.props.name}/>
-	    	<Hey  name={this.props.name}/>
+	    	<Search auth={this.state.auth} token={this.state.token}/>
 	    	</div>
 	    )
 	}
