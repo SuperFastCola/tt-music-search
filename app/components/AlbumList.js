@@ -2,11 +2,15 @@ import React from 'react';
 import $ from 'jquery';
 import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
-import setResults from "../actions";
+import Album from "./Album";
+import generalActions from "../actions";
 
-class Artist extends React.Component {
+class AlbumList extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			"success":false
+		}
 		this.chooseArtist = this.chooseArtist.bind(this)
 		this.startSearch = this.startSearch.bind(this);
 		this.ajaxError = this.ajaxError.bind(this);
@@ -22,9 +26,11 @@ class Artist extends React.Component {
 		this.startSearch(spot_id)
 	}
 	setListingData(output){
-		console.log(output);
+		this.setState({"success":true});
 		this.props.setAjaxError(null);
+		
 		this.props.setResults(output);
+
 	}
 	ajaxError(jqXHR, textStatus){
 		console.log(jqXHR)
@@ -32,8 +38,6 @@ class Artist extends React.Component {
 		this.props.setAjaxError(jqXHR.responseJSON);
 	}
 	sendAjaxRequest(url,resultFunction){
-		console.log("-------------")
-		console.log(this.props.info)
 		var request = $.ajax({
 			url: url,
 			method: "GET",
@@ -51,21 +55,15 @@ class Artist extends React.Component {
 		this.sendAjaxRequest(url,this.setListingData);
 	}
 	render() {
-		let target = this.props.info.results.artists.items[this.props.id];
-		let image = target.images.filter(img=>(img.width>=150 && img.width<=350));
-		let style ={};
-		let noPhoto = "";
-		if(image.length>0){
-			style.backgroundImage = 'url(' + image[0].url  + ')';	
-		}
-		else{
-			noPhoto = "none"
-		}
-		
+		let target = this.props.info.results.items;
 	    return (
-	    	<div className="artist_row" data-spot-id={target.id} onClick={this.chooseArtist}>
-				<div className={`artist_photo ${noPhoto}`} style={style}></div>
-	    		<span className="artist_name">{target.name}</span>
+	    	<div className="artist_listing">
+	    		{typeof target != "undefined" &&
+	    		 	target.map((artist,index) => 
+						(<Album key={index} id={index}/>)
+					)
+	    			
+	    		}
 	    	</div>
 	    )
   }
@@ -74,21 +72,15 @@ class Artist extends React.Component {
 const mapStateToProps = function(state){
 	return {"info":state};		
 }
- const mapDispatchToProps = function(dispatch) {
+
+const mapDispatchToProps = function(dispatch) {
     return({
-        setArtist: (artist_obj) => {
-        	dispatch({type:"SET_ARTIST","artist":artist_obj})
-        },
-        setCategory: (category) => {
-        	dispatch({type:"SET_SEARCH_CATEGORY","category":category})
-        },
         setResults: (results) => {
         	dispatch({type:"SET_RESULTS","results":results})
         },
         setAjaxError: (error) => {
         	dispatch({type:"SET_AJAX_ERROR","error":error})
         }
-
     })
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Artist)
+export default connect(mapStateToProps,mapDispatchToProps)(AlbumList)

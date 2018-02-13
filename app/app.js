@@ -10,7 +10,10 @@ let initiailState = {
 	token:null,
 	error:null,
 	results:null,
+	selected_artist:null,
+	selected_album:null,
 	category:"artists",
+	spotify_base: "https://api.spotify.com/v1",
 	search:{
 		url:"https://api.spotify.com/v1/search?q=",
 		param: "&type=",

@@ -2,8 +2,9 @@ import React from 'react';
 import $ from 'jquery';
 import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
-import setResults from "../actions";
+import generalActions from "../actions";
 import ArtistList from "./ArtistList";
+import AlbumList from "./AlbumList";
 
 class Search extends React.Component {
 	constructor(props) {
@@ -21,11 +22,14 @@ class Search extends React.Component {
 	componentDidCatch(error, info) {
 	}
 	setListingData(output){
+		console.log(output);
+		this.props.setAjaxError(null);
 		this.props.setResults(output);
 	}
 	ajaxError(jqXHR, textStatus){
 		console.log(jqXHR)
 		console.log(textStatus)
+		this.props.setAjaxError(jqXHR.responseJSON);
 	}
 	sendAjaxRequest(url,resultFunction){
 		var request = $.ajax({
@@ -48,11 +52,16 @@ class Search extends React.Component {
 	}
 	render() {
 		var listing = null;
+
 		switch(this.props.info.category){
 			case 'artists':
 				listing = <ArtistList/>
-			break;
+				break;
+			case 'albums':
+				listing = <AlbumList/>
+				break;
 		}
+
 	    return (
 	    	<div>
 	    	<p>Search Artists</p>
@@ -63,12 +72,10 @@ class Search extends React.Component {
 	    	 { this.props.info.results != null && 
 	    	 	listing
 	    	 }
-	    	 
 	    	</div>
 	    )
   }
 }
-
 const mapStateToProps = function(state){
 	return {"info":state};		
 }
@@ -77,9 +84,13 @@ const mapStateToProps = function(state){
     return({
         setResults: (results) => {
         	dispatch({type:"SET_RESULTS","results":results})
+        },
+        setAjaxError: (error) => {
+        	dispatch({type:"SET_AJAX_ERROR","error":error})
         }
     })
 }
+
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(Search)

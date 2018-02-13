@@ -35,7 +35,7 @@ class App extends React.Component {
 	    )
 	}
 	render() {
-	    if(this.props.info.token!=null){
+	    if(this.props.info.token!=null && this.props.info.error==null){
 	    	return this.showApp()
 	    }
 	    else{
