@@ -10,8 +10,16 @@ const rootReducer = function(state=initialState,action) {
   console.log("<<<rootReducer");
    switch (action.type) {
     case "SET_TOKEN":
-      state = {token:action.token,auth:state.auth};
+      state = Object.assign({}, state, {
+                token:action.token
+              })
       return state;
+    case "SET_RESULTS":
+      state = Object.assign({}, state, {
+                results: action.results
+              })
+      console.log(state);
+    return state;
     default:
       return state;  
    }

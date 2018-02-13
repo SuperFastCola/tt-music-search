@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import Login from './Login';
+import Search from './Search';
 import { createStore } from "redux";
 import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
@@ -29,8 +30,7 @@ class App extends React.Component {
 	showApp(){
 		return (
 	    	<div>
-	    	<HelloMessage name={this.props.name}/>
-	    	<Hey  name={this.props.name}/>
+	    	<Search/>
 	    	</div>
 	    )
 	}

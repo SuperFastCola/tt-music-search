@@ -4,3 +4,10 @@ export const setToken = token => {
     "token":token
   }
 }
+
+export const setResults = results => {
+  return {
+    type: 'SET_RESULTS',
+    "results":results
+  }
+}

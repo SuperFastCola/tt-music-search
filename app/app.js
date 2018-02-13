@@ -8,6 +8,14 @@ import 'styles';
 
 let initiailState = {
 	token:null,
+	error:null,
+	results:null,
+	category:"artists",
+	search:{
+		url:"https://api.spotify.com/v1/search?q=",
+		param: "&type=",
+		subject: "artist"
+	},
 	auth: {
 		url:"https://accounts.spotify.com/authorize",
 		client_id:"ff309ab919044f60b2fbcf76ed9095e5",

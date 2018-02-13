@@ -1,4 +1,28 @@
-$red: pink;
-*{
-	color: $red;
+.artist_listing{
+	width: 100%;
+
+	.artist_row{
+		width: 25%;
+		display: inline-block;
+
+		.artist_photo{
+			display: inline-block;
+			vertical-align: middle;
+			background-size: cover;
+			width: 30%;
+			padding-top: 30%;
+			border:1px solid gray;
+
+			&.none{
+
+			}
+		}
+
+		.artist_name{
+			display: inline-block;
+			width: 69%;
+			vertical-align: middle;
+		}	
+	}
+
 }
