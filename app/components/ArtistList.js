@@ -10,12 +10,17 @@ class ArtistList extends React.Component {
 		super(props);
 	}
 	render() {
-		let target = this.props.info.results.artists.items;
+		let target = null
+		if(typeof this.props.info.results.artists != "undefined"){
+			target = this.props.info.results.artists.items;
+		}
 	    return (
 	    	<div className="artist_listing">
-			    {target.map((artist,index) => 
-					(<Artist key={index} id={index}/>)
-				)}
+	    		{target != null &&
+	    		 	target.map((artist,index) => 
+						(<Artist key={index} id={index}/>)
+					)
+	    		}
 	    	</div>
 	    )
   }

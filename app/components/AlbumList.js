@@ -49,7 +49,6 @@ class AlbumList extends React.Component {
 	    		 	target.map((artist,index) => 
 						(<Album key={index} id={index}/>)
 					)
-	    			
 	    		}
 	    	</div>
 	    )

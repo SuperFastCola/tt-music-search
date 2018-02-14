@@ -6,7 +6,6 @@ for( var p in process.argv){
     }
 }
 console.log("Development Environment " + dev);
-
 var webpack = require("webpack");
 var path = require('path');
 var APP_DIR = path.resolve(__dirname, 'app/');

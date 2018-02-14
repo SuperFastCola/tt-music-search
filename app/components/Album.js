@@ -37,9 +37,9 @@ class Album extends React.Component {
 
 		var tracks_loaded = (this.state.showTracks && this.props.info.selected_tracks != null )?true:false;
 	    return (
-	    	<div className="artist_row" data-spot-id={target.id} onClick={this.getTracks}>
-				<div className={`artist_photo ${noPhoto}`} style={style}></div>
-	    		<span className="artist_name">{target.name}</span>
+	    	<div className="artist_row album" data-spot-id={target.id} onClick={this.getTracks}>
+				<div className={`artist_photo album ${noPhoto}`} style={style}></div>
+	    		<span className="artist_name album">{target.name}</span>
 				{ tracks_loaded &&
 	    			<span>Tracks: {this.props.info.selected_tracks.items.length}</span>
 	    		}

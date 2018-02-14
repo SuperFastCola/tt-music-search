@@ -32,6 +32,7 @@ class Search extends React.Component {
 	}
 	startSearch(e){
 		e.preventDefault();
+		this.props.setCategory("artists");
 		var search_string = String($("input[name=query]").val()).replace(/\s/g,"%20");
 		var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
 		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
@@ -70,6 +71,9 @@ const mapStateToProps = function(state){
     return({
         setResults: (results) => {
         	dispatch({type:"SET_RESULTS","results":results})
+        },
+        setCategory: (category) => {
+        	dispatch({type:"SET_SEARCH_CATEGORY","category":category})
         },
         setAjaxError: (error) => {
         	dispatch({type:"SET_AJAX_ERROR","error":error})

@@ -1,3 +1,6 @@
+@import "bourbon/bourbon";
+@import "base/base";
+
 .artist_listing{
 	width: 100%;
 
@@ -23,6 +26,10 @@
 			width: 69%;
 			vertical-align: middle;
 		}	
+
+		&.album{
+			width: 33%;
+		}
 	}
 
 }
