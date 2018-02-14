@@ -5,15 +5,14 @@ import rootReducer from "../reducers/Spotify";
 import generalActions from "../actions";
 import ArtistList from "./ArtistList";
 import AlbumList from "./AlbumList";
+import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
 class Search extends React.Component {
 	constructor(props) {
 		super(props);
 		this.startSearch = this.startSearch.bind(this);
 		this.ajaxError = this.ajaxError.bind(this);
-		this.setHeaderForAjax = this.setHeaderForAjax.bind(this)
 		this.setListingData = this.setListingData.bind(this)
-		this.sendAjaxRequest = this.sendAjaxRequest.bind(this)
 
 		console.log()
 	}
@@ -31,24 +30,11 @@ class Search extends React.Component {
 		console.log(textStatus)
 		this.props.setAjaxError(jqXHR.responseJSON);
 	}
-	sendAjaxRequest(url,resultFunction){
-		var request = $.ajax({
-			url: url,
-			method: "GET",
-			dataType: "json",
-			beforeSend: this.setHeaderForAjax
-		});
-		request.done(resultFunction);
-		request.fail(this.ajaxError);
-	}
-	setHeaderForAjax(xhr){
-		xhr.setRequestHeader("Authorization", "Bearer " + this.props.info.token );
-	}
 	startSearch(e){
 		e.preventDefault();
 		var search_string = String($("input[name=query]").val()).replace(/\s/g,"%20");
 		var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
-		this.sendAjaxRequest(search_url,this.setListingData);
+		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	render() {
 		var listing = null;

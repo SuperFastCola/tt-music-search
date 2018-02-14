@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
 import Album from "./Album";
 import generalActions from "../actions";
+import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
 class AlbumList extends React.Component {
 	constructor(props) {
@@ -13,10 +14,13 @@ class AlbumList extends React.Component {
 		}
 		this.chooseArtist = this.chooseArtist.bind(this)
 		this.startSearch = this.startSearch.bind(this);
-		this.ajaxError = this.ajaxError.bind(this);
-		this.setHeaderForAjax = this.setHeaderForAjax.bind(this)
 		this.setListingData = this.setListingData.bind(this)
-		this.sendAjaxRequest = this.sendAjaxRequest.bind(this)
+		this.ajaxError = this.ajaxError.bind(this)
+	}
+	ajaxError(jqXHR, textStatus){
+		console.log(jqXHR)
+		console.log(textStatus)
+		this.props.setAjaxError(jqXHR.responseJSON);
 	}
 	chooseArtist(e){
 		e.preventDefault()
@@ -32,27 +36,10 @@ class AlbumList extends React.Component {
 		this.props.setResults(output);
 
 	}
-	ajaxError(jqXHR, textStatus){
-		console.log(jqXHR)
-		console.log(textStatus)
-		this.props.setAjaxError(jqXHR.responseJSON);
-	}
-	sendAjaxRequest(url,resultFunction){
-		var request = $.ajax({
-			url: url,
-			method: "GET",
-			dataType: "json",
-			beforeSend: this.setHeaderForAjax
-		});
-		request.done(resultFunction);
-		request.fail(this.ajaxError);
-	}
-	setHeaderForAjax(xhr){
-		xhr.setRequestHeader("Authorization", "Bearer " + this.props.info.token );
-	}
 	startSearch(spot_id){
 		let url =  `${this.props.info.spotify_base}/artists/${spot_id}/albums`;
-		this.sendAjaxRequest(url,this.setListingData);
+		//this.sendAjaxRequest(url,this.setListingData);
+		sendAjaxRequest(url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	render() {
 		let target = this.props.info.results.items;

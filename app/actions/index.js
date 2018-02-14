@@ -12,6 +12,13 @@ export const setResults = results => {
   }
 }
 
+export const setTracks = tracks => {
+  return {
+    type: 'SET_TRACKS',
+    "tracks":tracks
+  }
+}
+
 export const setAjaxError = error => {
   return {
     type: 'SET_AJAX_ERROR',

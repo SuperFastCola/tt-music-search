@@ -16,6 +16,9 @@ const rootReducer = function(state=initialState,action) {
       state = Object.assign({}, state, {results: action.results})
       //console.log(state);
       return state;
+    case "SET_TRACKS":
+      state = Object.assign({}, state, {selected_tracks: action.tracks})
+    return state;
      case "SET_AJAX_ERROR":
         state = Object.assign({}, state, {error: action.error});
         //console.log(state)

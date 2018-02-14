@@ -3,14 +3,27 @@ import $ from 'jquery';
 import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
 import setResults from "../actions";
+import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
 class Album extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			showTracks:false
+		}
+		this.getTracks = this.getTracks.bind(this)
+		this.showTracks = this.showTracks.bind(this)
 	}
-	
-	render() {
-		
+	getTracks(e){
+		var album_id = String($(e.currentTarget).data("spot-id"));
+		let url =  `${this.props.info.spotify_base}/albums/${album_id}/tracks?limit=50`;
+		sendAjaxRequest(url,this.props.info.token,this.showTracks);
+	}
+	showTracks(output){
+		this.setState({showTracks:true});
+		this.props.setTracks(output);
+	}
+	render(){
 		let target = this.props.info.results.items[this.props.id];
 		let image = target.images.filter(img=>(img.width>=150 && img.width<=350));
 		let style ={};
@@ -22,10 +35,14 @@ class Album extends React.Component {
 			noPhoto = "none"
 		}
 
+		var tracks_loaded = (this.state.showTracks && this.props.info.selected_tracks != null )?true:false;
 	    return (
-	    	<div className="artist_row" data-spot-id={target.id}>
+	    	<div className="artist_row" data-spot-id={target.id} onClick={this.getTracks}>
 				<div className={`artist_photo ${noPhoto}`} style={style}></div>
 	    		<span className="artist_name">{target.name}</span>
+				{ tracks_loaded &&
+	    			<span>Tracks: {this.props.info.selected_tracks.items.length}</span>
+	    		}
 	    	</div>
 	    )
   }
@@ -44,6 +61,9 @@ const mapStateToProps = function(state){
         },
         setResults: (results) => {
         	dispatch({type:"SET_RESULTS","results":results})
+        },
+        setTracks: (tracks) => {
+        	dispatch({type:"SET_TRACKS","tracks":tracks})
         },
         setAjaxError: (error) => {
         	dispatch({type:"SET_AJAX_ERROR","error":error})

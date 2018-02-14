@@ -11,7 +11,7 @@ let initiailState = {
 	error:null,
 	results:null,
 	selected_artist:null,
-	selected_album:null,
+	selected_tracks:null,
 	category:"artists",
 	spotify_base: "https://api.spotify.com/v1",
 	search:{
