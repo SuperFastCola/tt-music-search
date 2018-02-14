@@ -41,6 +41,11 @@ class Search extends React.Component {
 		var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
 		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
+	showNewRelease(){
+		var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
+		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
+
+	}
 	showSearch(){
 		this.props.setArtist(null);
 	}
@@ -71,6 +76,9 @@ class Search extends React.Component {
 				listing = <ArtistList/>
 				break;
 			case 'albums':
+				listing = <AlbumList/>
+				break;
+			case 'newreleases':
 				listing = <AlbumList/>
 				break;
 		}
