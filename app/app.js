@@ -12,8 +12,9 @@ let initiailState = {
 	results:null,
 	selected_artist:null,
 	selected_tracks:null,
-	category:"artists",
+	category:"newreleases",
 	spotify_base: "https://api.spotify.com/v1",
+	new_releases_path: "/browse/new-releases",
 	search:{
 		url:"https://api.spotify.com/v1/search?q=",
 		param: "&type=",

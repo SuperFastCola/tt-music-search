@@ -17,14 +17,20 @@ class Search extends React.Component {
 		this.ajaxError = this.ajaxError.bind(this);
 		this.setListingData = this.setListingData.bind(this)
 		this.showSearch = this.showSearch.bind(this)
+		this.showNewRelease = this.showNewRelease.bind(this)
+		this.setNewReleasesData = this.setNewReleasesData.bind(this)
 
 	}
 	componentDidMount() {
+		this.showNewRelease()
 	}
 	componentDidCatch(error, info) {
 	}
 	setListingData(output){
-		console.log(output);
+		this.props.setAjaxError(null);
+		this.props.setResults(output);
+	}
+	setNewReleasesData(output){
 		this.props.setAjaxError(null);
 		this.props.setResults(output);
 	}
@@ -42,9 +48,8 @@ class Search extends React.Component {
 		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	showNewRelease(){
-		var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
-		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
-
+		var new_releases_url = this.props.info.spotify_base + this.props.info.new_releases_path;
+		sendAjaxRequest(new_releases_url,this.props.info.token,this.setNewReleasesData,this.ajaxError);
 	}
 	showSearch(){
 		this.props.setArtist(null);
@@ -57,7 +62,7 @@ class Search extends React.Component {
 	    	</div>
 		)
 	}
-	searchArea(){
+	searchArea(){		
 		return (
 			<div>
 	    	<p>Search Artists</p>
@@ -70,7 +75,6 @@ class Search extends React.Component {
 	}
 	render() {
 		var listing = null;
-
 		switch(this.props.info.category){
 			case 'artists':
 				listing = <ArtistList/>
@@ -82,6 +86,7 @@ class Search extends React.Component {
 				listing = <AlbumList/>
 				break;
 		}
+
 
 	    return (
 	    	<div>
@@ -114,8 +119,6 @@ const mapStateToProps = function(state){
         }
     })
 }
-
-
 
 export default connect(mapStateToProps,mapDispatchToProps)(Search)
 
