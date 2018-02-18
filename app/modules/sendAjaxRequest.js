@@ -20,7 +20,8 @@ export const sendAjaxRequest = (url, token, callback, errorHandler) => {
 			beforeSend: ajaxobj.setHeaderForAjax
 		});
 	ajaxobj.request.done(callback);
-	if(typeof ajaxError != "undefined"){
+	
+	if(typeof errorHandler != "undefined"){
 		ajaxobj.request.fail(errorHandler);	
 	}
 	else{

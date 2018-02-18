@@ -10,6 +10,8 @@ let initiailState = {
 	token:null,
 	error:null,
 	results:null,
+	next_url: null,
+	prev_url: null,
 	selected_artist:null,
 	selected_tracks:null,
 	category:"newreleases",

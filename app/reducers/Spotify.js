@@ -13,8 +13,31 @@ const rootReducer = function(state=initialState,action) {
       state = Object.assign({}, state, {token:action.token})
       return state;
     case "SET_RESULTS":
-      state = Object.assign({}, state, {results: action.results})
-      //console.log(state);
+      let next_url = null;
+      let prev_url = null;
+     if(String(state.category).match(/artists|albums/i)){
+       if(typeof action.results[state.category] != "undefined"){
+          
+         next_url = action.results[state.category].next;
+         if(typeof action.results[state.category].previous != "undefined"){
+           prev_url = action.results[state.category].previous;
+         }
+       }
+       else{
+         next_url = action.results.next;
+         if(typeof action.results.previous != "undefined"){
+           prev_url = action.results.previous;
+         } 
+       }
+     }
+     else{
+       next_url = action.results.albums.next;
+       if(typeof action.results.albums.previous != "undefined"){
+         prev_url = action.results.albums.previous;
+       }
+     } 
+      
+      state = Object.assign({}, state, {results: action.results, prev_url: prev_url, next_url: next_url })
       return state;
     case "SET_TRACKS":
       state = Object.assign({}, state, {selected_tracks: action.tracks})

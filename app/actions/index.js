@@ -40,3 +40,10 @@ export const setCategory = category => {
   }
 }
 
+export const setNav = category => {
+  return {
+    type: 'SET_NAV'
+  }
+}
+
+

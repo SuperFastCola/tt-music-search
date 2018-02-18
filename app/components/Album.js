@@ -24,7 +24,15 @@ class Album extends React.Component {
 		this.props.setTracks(output);
 	}
 	render(){
-		let target = this.props.info.results.items[this.props.id];
+
+		let target = null;
+		if(typeof this.props.info.results.albums != "undefined"){
+			target = this.props.info.results.albums.items[this.props.id];
+		}
+		else{
+			target = this.props.info.results.items[this.props.id];
+		}
+
 		let image = target.images.filter(img=>(img.width>=150 && img.width<=350));
 		let style ={};
 		let noPhoto = "";

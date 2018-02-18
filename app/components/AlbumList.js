@@ -42,7 +42,7 @@ class AlbumList extends React.Component {
 		sendAjaxRequest(url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	render() {
-		var target = null;
+		let target = null;
 		if(typeof this.props.info.results.albums != "undefined"){
 			target = this.props.info.results.albums.items;
 		}
@@ -50,7 +50,6 @@ class AlbumList extends React.Component {
 			target = this.props.info.results.items;
 		}
 
-		console.log(target);
 	    return (
 	    	<div className="artist_listing">
 	    		{typeof target != "undefined" &&

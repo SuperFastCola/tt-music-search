@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
 import generalActions from "../actions";
 import ArtistList from "./ArtistList";
+import NextPrevButton from "./NextPrevButton";
+import Error from "./Error";
 import AlbumList from "./AlbumList";
 import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
@@ -11,7 +13,8 @@ class Search extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			search:true
+			search:true,
+			errorText:null
 		}
 		this.startSearch = this.startSearch.bind(this);
 		this.ajaxError = this.ajaxError.bind(this);
@@ -19,7 +22,6 @@ class Search extends React.Component {
 		this.showSearch = this.showSearch.bind(this)
 		this.showNewRelease = this.showNewRelease.bind(this)
 		this.setNewReleasesData = this.setNewReleasesData.bind(this)
-
 	}
 	componentDidMount() {
 		this.showNewRelease()
@@ -35,21 +37,31 @@ class Search extends React.Component {
 		this.props.setResults(output);
 	}
 	ajaxError(jqXHR, textStatus){
+		console.log("-------SEARCH--")
 		console.log(jqXHR)
 		console.log(textStatus)
 		this.props.setAjaxError(jqXHR.responseJSON);
 	}
 	startSearch(e){
 		e.preventDefault();
-		this.props.setCategory("artists");
-		this.props.setArtist(null);
 		var search_string = String($("input[name=query]").val()).replace(/\s/g,"%20");
-		var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
-		sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);
+
+		if(search_string.match(/\D/)){
+			this.props.setCategory("artists");
+			this.props.setArtist(null);
+			this.setState({errorText:null});
+			var search_url = this.props.info.search.url + search_string + this.props.info.search.param + this.props.info.search.subject;
+			sendAjaxRequest(search_url,this.props.info.token,this.setListingData,this.ajaxError);	
+		}
+		else{
+			this.setState({errorText:"Please Enter a Search String"});
+		}
+		
 	}
 	showNewRelease(){
 		var new_releases_url = this.props.info.spotify_base + this.props.info.new_releases_path;
 		sendAjaxRequest(new_releases_url,this.props.info.token,this.setNewReleasesData,this.ajaxError);
+		//sendAjaxRequest(new_releases_url,null,this.setNewReleasesData,this.ajaxError);
 	}
 	showSearch(){
 		this.props.setArtist(null);
@@ -67,6 +79,9 @@ class Search extends React.Component {
 			<div>
 	    	<p>Search Artists</p>
 	    	<form className="search_form">
+	    		{ this.state.errorText &&
+	    			(<Error errorText={this.state.errorText}/>)
+	    		}
 	    		<input type="text" name="query" placeholder="Enter Your Query" />
 	    		<button type="sumit" onClick={this.startSearch}>Start</button>
 	    	</form>
@@ -86,8 +101,7 @@ class Search extends React.Component {
 				listing = <AlbumList/>
 				break;
 		}
-
-
+		
 	    return (
 	    	<div>
 	    	{ this.props.info.selected_artist == null && this.searchArea() }
@@ -95,7 +109,15 @@ class Search extends React.Component {
 	    	{ this.props.info.results != null && 
 				listing
 	    	}
+	    	{this.props.info.prev_url != null &&
+	    		<NextPrevButton url={this.props.info.prev_url} text="Previous" />
+	    	}
+	    	{this.props.info.next_url != null &&
+	    		<NextPrevButton url={this.props.info.next_url} text="Next" />
+	    	}
+	    	
 	    	</div>
+
 	    )
   }
 }
