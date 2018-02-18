@@ -13,6 +13,7 @@ const rootReducer = function(state=initialState,action) {
       state = Object.assign({}, state, {token:action.token})
       return state;
     case "SET_RESULTS":
+    
       let next_url = null;
       let prev_url = null;
      if(String(state.category).match(/artists|albums/i)){

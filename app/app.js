@@ -14,6 +14,8 @@ let initiailState = {
 	prev_url: null,
 	selected_artist:null,
 	selected_tracks:null,
+	next_tracks_url: null,
+	prev_tracks_url: null,
 	category:"newreleases",
 	spotify_base: "https://api.spotify.com/v1",
 	new_releases_path: "/browse/new-releases",

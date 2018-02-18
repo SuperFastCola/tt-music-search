@@ -29,6 +29,16 @@
 
 		&.album{
 			width: 33%;
+
+			.tracks_holder{
+				display: none;
+			}
+
+			&.selected{
+				.tracks_holder{
+					display: block;
+				}
+			}
 		}
 	}
 
