@@ -11,8 +11,8 @@ class ArtistList extends React.Component {
 	}
 	render() {
 		let target = null
-		if(typeof this.props.info.results.artists != "undefined"){
-			target = this.props.info.results.artists.items;
+		if(typeof this.props.info.results != "undefined"){
+			target = this.props.info.results.items;
 		}
 	    return (
 	    	<div className="artist_listing">

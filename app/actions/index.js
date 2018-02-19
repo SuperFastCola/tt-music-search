@@ -12,6 +12,13 @@ export const setResults = results => {
   }
 }
 
+export const addAlbumDetails = results => {
+  return {
+    type: 'ADD_ALBUM_DETAILS',
+    "results":results
+  }
+}
+
 export const setTracks = tracks => {
   return {
     type: 'SET_TRACKS',

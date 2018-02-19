@@ -14,8 +14,8 @@ const rootReducer = function(state=initialState,action) {
       return state;
     case "SET_RESULTS":
     
-      let next_url = null;
-      let prev_url = null;
+     let next_url = null;
+     let prev_url = null;
      if(String(state.category).match(/artists|albums/i)){
        if(typeof action.results[state.category] != "undefined"){
           
@@ -38,11 +38,34 @@ const rootReducer = function(state=initialState,action) {
        }
      } 
       
-      state = Object.assign({}, state, {results: action.results, prev_url: prev_url, next_url: next_url })
+      var filtered = null;
+      console.log(action.results);
+      if(typeof action.results.artists != "undefined"){
+          filtered = action.results.artists;
+      }
+      else if(typeof action.results.albums != "undefined"){
+        filtered = action.results.albums;
+      }
+      else{
+        filtered = action.results; 
+      }
+      state = Object.assign({}, state, {results: filtered, prev_url: prev_url, next_url: next_url })
+      console.log(state);
       return state;
+    
+    case "ADD_ALBUM_DETAILS":
+      console.log("ADD_ALBUM_DETAILS");
+      console.log(action.results);
+      var new_results = Object.assign({}, state.results, {items: action.results.albums})
+      console.log(new_results);
+      state = Object.assign({}, state, {results: new_results})
+      console.log(state);
+    return state;
+
     case "SET_TRACKS":
       state = Object.assign({}, state, {selected_tracks: action.tracks})
     return state;
+
      case "SET_AJAX_ERROR":
         state = Object.assign({}, state, {error: action.error});
         //console.log(state)

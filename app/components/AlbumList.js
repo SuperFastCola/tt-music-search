@@ -10,7 +10,8 @@ class AlbumList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			"success":false
+			"success":false,
+			"showAlbums": false
 		}
 		this.chooseArtist = this.chooseArtist.bind(this)
 		this.startSearch = this.startSearch.bind(this);
@@ -32,24 +33,21 @@ class AlbumList extends React.Component {
 	setListingData(output){
 		this.setState({"success":true});
 		this.props.setAjaxError(null);
-		
 		this.props.setResults(output);
-
 	}
 	startSearch(spot_id){
 		let url =  `${this.props.info.spotify_base}/artists/${spot_id}/albums`;
-		//this.sendAjaxRequest(url,this.setListingData);
 		sendAjaxRequest(url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	render() {
 		let target = null;
-		if(typeof this.props.info.results.albums != "undefined"){
-			target = this.props.info.results.albums.items;
+		if(typeof this.props.info.results != "undefined"){
+			target = this.props.info.results.items;
 		}
 		else{
 			target = this.props.info.results.items;
 		}
-
+		
 	    return (
 	    	<div className="artist_listing">
 	    		{typeof target != "undefined" &&

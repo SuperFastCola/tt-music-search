@@ -12,11 +12,13 @@ class Artist extends React.Component {
 		this.startSearch = this.startSearch.bind(this);
 		this.setListingData = this.setListingData.bind(this)
 		this.ajaxError = this.ajaxError.bind(this)
+		this.getAlbumsDetails = this.getAlbumsDetails.bind(this)
+		this.addAlbumDetailsToResults = this.addAlbumDetailsToResults.bind(this)
 	}
 	chooseArtist(e){
 		e.preventDefault()
-		let spot_id = this.props.info.results.artists.items[this.props.id].id;
-		this.props.setArtist(this.props.info.results.artists.items[this.props.id]);
+		let spot_id = this.props.info.results.items[this.props.id].id;
+		this.props.setArtist(this.props.info.results.items[this.props.id]);
 		this.props.setCategory("albums");
 		this.startSearch(spot_id)
 	}
@@ -25,33 +27,63 @@ class Artist extends React.Component {
 		console.log(textStatus)
 		this.props.setAjaxError(jqXHR.responseJSON);
 	}
+	addAlbumDetailsToResults(output){
+		this.props.setAjaxError(null);
+		this.props.addAlbumDetails(output);
+	}
+	getAlbumsDetails(output){
+		var album_ids = "";
+		output.items.map((album,index)=>{
+			album_ids += album.id + ((index<(output.items.length-1))?",":"");
+		});
+
+		let url =  `${this.props.info.spotify_base}/albums?ids=${album_ids}`;
+		sendAjaxRequest(url,this.props.info.token,this.addAlbumDetailsToResults,this.ajaxError);
+	}
+
 	setListingData(output){
-		console.log(output);
 		this.props.setAjaxError(null);
 		this.props.setResults(output);
+		this.getAlbumsDetails(output);
+
 	}
 	startSearch(spot_id){
 		let url =  `${this.props.info.spotify_base}/artists/${spot_id}/albums`;
 		sendAjaxRequest(url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	render() {
-		let target = this.props.info.results.artists.items[this.props.id];
-		let image = target.images.filter(img=>(img.width>=150 && img.width<=350));
-		let style ={};
-		let noPhoto = "";
-		if(image.length>0){
-			style.backgroundImage = 'url(' + image[0].url  + ')';	
-		}
-		else{
-			noPhoto = "none"
+		var target = this.props.info.results.items[this.props.id];
+		var image = [];
+		var style ={};
+		var noPhoto = "";
+
+		if(target != null){
+			if(typeof target.images !="undefined" && typeof target != "undefined"){
+				image = target.images.filter(img=>(img.width>=150 && img.width<=350));
+			}
+			
+			if(image.length>0){
+				style.backgroundImage = 'url(' + image[0].url  + ')';	
+			}
+			else{
+				noPhoto = "none"
+			}
 		}
 		
-	    return (
-	    	<div className="artist_row" data-spot-id={target.id} onClick={this.chooseArtist}>
-				<div className={`artist_photo ${noPhoto}`} style={style}></div>
-	    		<span className="artist_name">{target.name}</span>
-	    	</div>
-	    )
+		if(target != null){
+			return (
+		    	<div className="artist_row" data-spot-id={target.id} onClick={this.chooseArtist}>
+					<div className={`artist_photo ${noPhoto}`} style={style}></div>
+		    		<span className="artist_name">{target.name}</span>
+		    	</div>
+	    	)	
+		}
+		else{
+			return (
+				<div>Nada</div>
+			)
+		}
+	    
   }
 }
 
@@ -65,6 +97,9 @@ const mapStateToProps = function(state){
         },
         setCategory: (category) => {
         	dispatch({type:"SET_SEARCH_CATEGORY","category":category})
+        },
+        addAlbumDetails: (results) => {
+        	dispatch({type:"ADD_ALBUM_DETAILS","results":results})
         },
         setResults: (results) => {
         	dispatch({type:"SET_RESULTS","results":results})

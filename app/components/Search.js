@@ -22,6 +22,8 @@ class Search extends React.Component {
 		this.showSearch = this.showSearch.bind(this)
 		this.showNewRelease = this.showNewRelease.bind(this)
 		this.setNewReleasesData = this.setNewReleasesData.bind(this)
+		this.getAlbumsDetails = this.getAlbumsDetails.bind(this)
+		this.addAlbumDetailsToResults = this.addAlbumDetailsToResults.bind(this)
 	}
 	componentDidMount() {
 		this.showNewRelease()
@@ -35,6 +37,19 @@ class Search extends React.Component {
 	setNewReleasesData(output){
 		this.props.setAjaxError(null);
 		this.props.setResults(output);
+		this.getAlbumsDetails();
+	}
+	addAlbumDetailsToResults(output){
+		this.props.setAjaxError(null);
+		this.props.addAlbumDetails(output);
+	}
+	getAlbumsDetails(){
+		var album_ids = "";
+		this.props.info.results.items.map((album,index)=>{
+			album_ids += album.id + ((index<(this.props.info.results.items.length-1))?",":"");
+		});
+		let url =  `${this.props.info.spotify_base}/albums?ids=${album_ids}`;
+		sendAjaxRequest(url,this.props.info.token,this.addAlbumDetailsToResults,this.ajaxError);
 	}
 	ajaxError(jqXHR, textStatus){
 		console.log(jqXHR)
@@ -130,6 +145,9 @@ const mapStateToProps = function(state){
         },
         setArtist: (artist_obj) => {
         	dispatch({type:"SET_ARTIST","artist":artist_obj})
+        },
+        addAlbumDetails: (results) => {
+        	dispatch({type:"ADD_ALBUM_DETAILS","results":results})
         },
         setCategory: (category) => {
         	dispatch({type:"SET_SEARCH_CATEGORY","category":category})

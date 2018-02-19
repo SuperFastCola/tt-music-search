@@ -34,6 +34,12 @@ body{
 		&.album{
 			width: 33%;
 
+			.popularity{
+				span{
+					display: block;
+				}
+			}
+
 			.tracks_holder{
 				display: none;
 

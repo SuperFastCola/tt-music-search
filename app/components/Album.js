@@ -90,29 +90,47 @@ class Album extends React.Component {
 		)
 	}
 	render(){
-		let target = null;
-		if(typeof this.props.info.results.albums != "undefined"){
-			target = this.props.info.results.albums.items[this.props.id];
-		}
-		else{
+		var target = null;
+		if(typeof this.props.info.results != "undefined"){
 			target = this.props.info.results.items[this.props.id];
 		}
 
-		let image = target.images.filter(img=>(img.width>=150 && img.width<=350));
+		let image = null;
 		let style ={};
 		let noPhoto = "";
-		if(image.length>0){
-			style.backgroundImage = 'url(' + image[0].url  + ')';	
+		let album_year = null;
+		let stars = null;
+		let tracks_loaded = (this.state.showTracks && this.state.tracks != null )?true:false;
+
+
+		if(target != null){
+			image = target.images.filter(img=>(img.width>=150 && img.width<=350));
+			if(image.length>0){
+				style.backgroundImage = 'url(' + image[0].url  + ')';	
+			}
+			else{
+				noPhoto = "none"
+			}
+	
+			if(typeof target.release_date != "undefined"){
+				album_year = new Date(target.release_date);	
+				album_year = album_year.getFullYear();
+			}
+		
+			if(typeof target.popularity != "undefined"){
+				stars =  Math.round(Number((Number(target.popularity)/100) * 5));
+			}
 		}
-		else{
-			noPhoto = "none"
-		}
-		var tracks_loaded = (this.state.showTracks && this.state.tracks != null )?true:false;
+
 	    return (
 	    	<div className="artist_row album">
 				<div className={`artist_photo album ${noPhoto}`} style={style}></div>
 	    		<div className="artist_name album">
-	    			{target.name}
+	    			<div className="h1">{target.name}</div>
+	    			<div className="popularity">
+	    				<span className="review">{stars}</span>
+	    				<span className="release_date">{album_year}</span>
+	    			</div>
 	    		</div>
 
 	    		{this.state.showTracks==false &&
