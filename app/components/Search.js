@@ -37,7 +37,6 @@ class Search extends React.Component {
 		this.props.setResults(output);
 	}
 	ajaxError(jqXHR, textStatus){
-		console.log("-------SEARCH--")
 		console.log(jqXHR)
 		console.log(textStatus)
 		this.props.setAjaxError(jqXHR.responseJSON);
@@ -61,7 +60,6 @@ class Search extends React.Component {
 	showNewRelease(){
 		var new_releases_url = this.props.info.spotify_base + this.props.info.new_releases_path;
 		sendAjaxRequest(new_releases_url,this.props.info.token,this.setNewReleasesData,this.ajaxError);
-		//sendAjaxRequest(new_releases_url,null,this.setNewReleasesData,this.ajaxError);
 	}
 	showSearch(){
 		this.props.setArtist(null);

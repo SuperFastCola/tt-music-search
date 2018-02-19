@@ -1,6 +1,10 @@
 @import "bourbon/bourbon";
 @import "base/base";
 
+body{
+	font-size:  1em;
+}
+
 .artist_listing{
 	width: 100%;
 
@@ -32,6 +36,11 @@
 
 			.tracks_holder{
 				display: none;
+
+				.album_track{
+					font-size: .5em;
+					display: block;
+				}
 			}
 
 			&.selected{
