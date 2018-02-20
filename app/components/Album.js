@@ -3,6 +3,7 @@ import $ from 'jquery';
 import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
 import setResults from "../actions";
+import marked from "marked";
 import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
 class DiscName extends React.Component{
@@ -43,6 +44,7 @@ class Album extends React.Component {
 		this.displayTracks = this.displayTracks.bind(this)
 		this.getAdditionalTracks = this.getAdditionalTracks.bind(this)
 		this.hideTracks = this.hideTracks.bind(this)
+		this.createReviewsArea = this.createReviewsArea.bind(this)
 	}
 	getTracks(e){
 		$(".artist_row.album").removeClass("selected");
@@ -89,6 +91,22 @@ class Album extends React.Component {
 
 		)
 	}
+	createReviewsArea(rating) {
+		var total = rating;
+		var html = "";
+		var current = 1;
+		while(current <= 5){
+			if(current<=total){
+				html += marked("<span class='review-star filled'>&#9733;</span>", {sanitize: false});
+			}
+			else{
+				html += marked("<span class='review-star'>&#9733;</span>", {sanitize: false});
+			}
+			current++;
+		}
+
+    	return { __html: html };
+  	}
 	render(){
 		var target = null;
 		if(typeof this.props.info.results != "undefined"){
@@ -128,7 +146,7 @@ class Album extends React.Component {
 	    		<div className="artist_name album">
 	    			<div className="h1">{target.name}</div>
 	    			<div className="popularity">
-	    				<span className="review">{stars}</span>
+	    				<span className="review"  dangerouslySetInnerHTML={this.createReviewsArea(stars)}></span>
 	    				<span className="release_date">{album_year}</span>
 	    			</div>
 	    		</div>

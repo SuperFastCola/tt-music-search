@@ -48,7 +48,7 @@ class Artist extends React.Component {
 
 	}
 	startSearch(spot_id){
-		let url =  `${this.props.info.spotify_base}/artists/${spot_id}/albums`;
+		let url =  `${this.props.info.spotify_base}/artists/${spot_id}/albums?album_type=album,single`;
 		sendAjaxRequest(url,this.props.info.token,this.setListingData,this.ajaxError);
 	}
 	render() {
