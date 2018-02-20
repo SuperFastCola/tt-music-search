@@ -142,7 +142,12 @@ class Album extends React.Component {
 
 	    return (
 	    	<div className="artist_row album">
-				<div className={`artist_photo album ${noPhoto}`} style={style}></div>
+	    		<div className="cover_holder album">
+				<div className={`artist_photo ${noPhoto}`} style={style}></div>
+					{ (target.id==this.state.selectedAlbum && tracks_loaded ) &&
+	    				this.displayTracks()
+	    			}
+				</div>
 	    		<div className="artist_name album">
 	    			<div className="h1">{target.name}</div>
 	    			<div className="popularity">
@@ -157,10 +162,6 @@ class Album extends React.Component {
 
 	    		{this.state.showTracks==true &&
 	    			<a className="hide_tracks" onClick={this.hideTracks}>Hide Tracks</a>	
-	    		}
-
-	    		{ (target.id==this.state.selectedAlbum && tracks_loaded ) &&
-	    			this.displayTracks()
 	    		}
 	    	</div>
 	    )

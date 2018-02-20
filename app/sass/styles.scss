@@ -1,5 +1,13 @@
+@import "neat/neat";
 @import "bourbon/bourbon";
 @import "base/base";
+
+
+
+$custom-grid--artist: (
+  columns: 1,
+  gutter: 30px,
+);
 
 body{
 	font-size:  1em;
@@ -9,16 +17,41 @@ body{
 	width: 100%;
 
 	.artist_row{
+		@include grid-container;
+
 		width: 25%;
 		display: inline-block;
 
-		.artist_photo{
-			display: inline-block;
+		.cover_holder{
+			@include grid-column(1, $custom-grid--artist);
+			position: relative;
 			vertical-align: middle;
-			background-size: cover;
-			width: 30%;
-			padding-top: 30%;
+			padding-top:  modular-scale(2,50%);
 			border:1px solid gray;
+
+			.artist_photo{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0px;
+				left: 0px;
+				background-size: cover;
+			}
+
+			.tracks_holder{
+				position: absolute;
+				display: none;
+				width: 100%;
+				height: 100%;
+				top: 0px;
+				left: 0px;
+				background-color: rgba(255,255,255,.5);
+
+				.album_track{
+					font-size: .5em;
+					display: block;
+				}
+			}
 
 			&.none{
 
@@ -26,13 +59,49 @@ body{
 		}
 
 		.artist_name{
-			display: inline-block;
-			width: 69%;
+			@include grid-column(1, $custom-grid--artist);
 			vertical-align: middle;
 		}	
 
 		&.album{
-			width: 33%;
+
+			$album--one-column: (
+			  columns: 1,
+			  gutter: 10px,
+			);
+
+			$album--two-columns: (
+			  columns: 2,
+			  gutter: 10px,
+			  media: 410px,
+			);
+
+			$album--three-columns: (
+			  columns: 3,
+			  gutter: 10px,
+			  media: 728px,
+			);
+
+			$album--four-columns: (
+			  columns: 4,
+			  gutter: 10px,
+			  media: 1024px,
+			);
+
+			@include grid-column(1, $album--one-column);
+
+			@include grid-media($album--two-columns){
+    			@include grid-column(1,$album--two-columns);
+  			}
+  			@include grid-media($album--three-columns){
+    			@include grid-column(1,$album--three-columns);
+  			}
+  			@include grid-media($album--three-columns){
+    			@include grid-column(1,$album--three-columns);
+  			}
+  			@include grid-media($album--four-columns){
+    			@include grid-column(1,$album--four-columns);
+  			}
 
 			.popularity{
 				.release_date{
@@ -61,13 +130,9 @@ body{
 				}
 			}
 
-			.tracks_holder{
-				display: none;
-
-				.album_track{
-					font-size: .5em;
-					display: block;
-				}
+			
+			.show_tracks,.hide_tracks{
+				@include grid-column(1, $custom-grid--artist);
 			}
 
 			&.selected{
