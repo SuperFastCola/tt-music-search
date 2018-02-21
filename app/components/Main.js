@@ -29,7 +29,7 @@ class App extends React.Component {
 	}
 	showApp(){
 		return (
-	    	<div>
+	    	<div className="search-area">
 	    	<Search/>
 	    	</div>
 	    )

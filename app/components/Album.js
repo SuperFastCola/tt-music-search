@@ -12,7 +12,7 @@ class DiscName extends React.Component{
 		}
 		render(){
 			return (
-				<span key={this.props.unique_key} >Disk {this.props.disc_number}</span>
+				<h1 key={this.props.unique_key} >Disk {this.props.disc_number}</h1>
 			)
 			
 		}
@@ -25,7 +25,7 @@ class Track extends React.Component{
 		render(){
 
 			return (
-				<div key={this.props.unique_key} className="album_track">{this.props.track_number} {this.props.name}</div>
+				<div key={this.props.unique_key} className="album-track"><span>{this.props.track_number}</span> {this.props.name}</div>
 			)
 			
 		}
@@ -47,7 +47,7 @@ class Album extends React.Component {
 		this.createReviewsArea = this.createReviewsArea.bind(this)
 	}
 	getTracks(e){
-		$(".artist_row.album").removeClass("selected");
+		//$(".artist_row.album").removeClass("selected");
 		$(e.currentTarget).parent().addClass("selected");
 		let album_id = String($(e.currentTarget).data("spot-id"));
 		this.setState({selectedAlbum: album_id});
@@ -69,7 +69,7 @@ class Album extends React.Component {
 	}
 	displayTracks(){
 		return(
-			<div className="tracks_holder">
+			<div className="tracks-holder">
 			{this.state.tracks.items.map(function(track,index){
 					var disc_number = null;
 					var key_base = new Date().getTime();
@@ -79,12 +79,12 @@ class Album extends React.Component {
 					return (<div key={String(index) + "holder"} >{disc_number}<Track key={index} unique_key={track.id} track_number={track.track_number} name={track.name} /></div>)
 				}
 			)}
-			<div className="tracks_nav">
+			<div className="tracks-navigation">
 				{ this.state.tracks.previous != null &&
-					<a className="prev_tracks" data-next-url={this.state.tracks.previous} onClick={this.getAdditionalTracks}>Previous Page</a>
+					<button className="prev_tracks" data-next-url={this.state.tracks.previous} onClick={this.getAdditionalTracks}>Previous Page</button>
 				}
 				{ this.state.tracks.next != null &&
-					<a className="next_tracks" data-next-url={this.state.tracks.next} onClick={this.getAdditionalTracks}>Next Page</a>
+					<button className="next_tracks" data-next-url={this.state.tracks.next} onClick={this.getAdditionalTracks}>Next Page</button>
 				}
 			</div>
 			</div>
@@ -142,6 +142,13 @@ class Album extends React.Component {
 
 	    return (
 	    	<div className="artist_row album">
+	    		{this.state.showTracks==false &&
+	    			<button className="show_tracks" onClick={this.getTracks} data-spot-id={target.id} >Show Tracks</button>	
+	    		}
+
+	    		{this.state.showTracks==true &&
+	    			<button className="hide_tracks" onClick={this.hideTracks}>Hide Tracks</button>	
+	    		}
 	    		<div className="cover_holder album">
 				<div className={`artist_photo ${noPhoto}`} style={style}></div>
 					{ (target.id==this.state.selectedAlbum && tracks_loaded ) &&
@@ -149,20 +156,13 @@ class Album extends React.Component {
 	    			}
 				</div>
 	    		<div className="artist_name album">
-	    			<div className="h1">{target.name}</div>
+	    			<div className="name">{target.name}</div>
 	    			<div className="popularity">
 	    				<span className="review"  dangerouslySetInnerHTML={this.createReviewsArea(stars)}></span>
 	    				<span className="release_date">{album_year}</span>
 	    			</div>
 	    		</div>
 
-	    		{this.state.showTracks==false &&
-	    			<a className="show_tracks" onClick={this.getTracks} data-spot-id={target.id} >Show Tracks</a>	
-	    		}
-
-	    		{this.state.showTracks==true &&
-	    			<a className="hide_tracks" onClick={this.hideTracks}>Hide Tracks</a>	
-	    		}
 	    	</div>
 	    )
   }

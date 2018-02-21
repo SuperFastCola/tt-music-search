@@ -2,31 +2,249 @@
 @import "bourbon/bourbon";
 @import "base/base";
 
+$blue-color: #1565c0;
+/*================ TAKEN and SLIGHTLY CHANGED FROM THEME.SCSS ================*/
+$grid-small: 600px;
+$grid-medium: 768px;
+$grid-large: 990px;
+$grid-widescreen: 1400px;
+$grid-gutter: 30px;
+$grid-gutter-mobile: 22px;
+
+$extra-small: 'extra-small';
+$small: 'small';
+$medium: 'medium';
+$medium-down: 'medium-down';
+$medium-up: 'medium-up';
+$large: 'large';
+$large-down: 'large-down';
+$large-up: 'large-up';
+$widescreen: 'widescreen';
+
+$grid-breakpoints: (
+  $extra-small '(max-width: #{$grid-small})',
+  $small '(max-width: #{$grid-medium - 1})',
+  $medium '(min-width: #{$grid-medium}) and (max-width: #{$grid-large - 1})',
+  $medium-down '(max-width: #{$grid-large - 1})',
+  $medium-up '(min-width: #{$grid-medium})',
+  $large '(min-width: #{$grid-large}) and (max-width: #{$grid-widescreen - 1})',
+  $large-down '(max-width: #{$grid-widescreen - 1})',
+  $large-up '(min-width: #{$grid-large})',
+  $widescreen '(min-width: #{$grid-widescreen})'
+);
+
+/*================ Media Query Mixin ================*/
+@mixin media-query($media-query) {
+  $breakpoint-found: false;
+
+  @each $breakpoint in $grid-breakpoints {
+    $name: nth($breakpoint, 1);
+    $declaration: nth($breakpoint, 2);
+
+    @if $media-query == $name and $declaration {
+      $breakpoint-found: true;
+
+      @media only screen and #{$declaration} {
+        @content;
+      }
+    }
+  }
+
+  @if $breakpoint-found == false {
+    @warn 'Breakpoint "#{$media-query}" does not exist';
+  }
+}
+
+/*================ Custom Mixins ================*/
+@mixin transformXY($y:0%, $x:0%){
+	-ms-transform: translateY($y) translateX($x);
+	-webkit-transform: translateY($y) translateX($x);
+	transform: translateY($y) translateX($x);
+}
+
+@mixin noTransform(){
+	-ms-transform: none;
+	-webkit-transform: none;
+	transform: none;
+}
+
+@mixin transformX($x:0%){
+	-ms-transform: translateX($x);
+	-webkit-transform: translateX($x);
+	transform: translateX($x);	
+}
+
+@mixin transformY($y:0%){
+	-ms-transform: translateY($y);
+	-webkit-transform: translateY($y);
+	transform: translateY($y);	
+}
 
 
-$custom-grid--artist: (
+@mixin trans_prop($prop:all, $time:.25s){
+	-webkit-transition: $prop $time;
+	-moz-transition: $prop $time;
+	-o-transition: $prop $time;
+	transition: $prop $time;
+}
+
+$neat-grid: (
+  columns: 12,
+  gutter: 20px,
+);
+
+
+$set--one-column: (
   columns: 1,
-  gutter: 30px,
+  gutter: 10px,
+);
+
+$set--two-columns: (
+  columns: 2,
+  gutter: 10px,
+  media: 415px,
+);
+
+$set--three-columns: (
+  columns: 3,
+  gutter: 10px,
+  media: 728px,
+);
+
+$set--four-columns: (
+  columns: 4,
+  gutter: 10px,
+  media: 1024px,
 );
 
 body{
 	font-size:  1em;
 }
 
-.artist_listing{
-	width: 100%;
+#{$all-buttons} {
+	text-transform: uppercase;
+	letter-spacing: .2em;
+	opacity: 1;
+	@include trans_prop(all,.25s);
+}
 
-	.artist_row{
+#{$all-buttons-hover} {
+	opacity: .5;
+}
+
+h1{
+	text-transform: uppercase;
+	letter-spacing: .1em;
+}
+
+.login-area{
+	 position: absolute;
+	 text-align: center;
+	 padding: 10% 0;
+	 width: 50%;
+	 top: 50%;
+	 left: 50%;
+	 border-right: 1px solid lightgray;
+	 border-left: 1px solid lightgray;
+	 @include transformXY(-50%,-50%);
+
+	 h1{
+	 	width: 70%;
+	 	margin: 0 auto 20px; 
+	 }
+}
+
+.search-area{
+	@include grid-container;
+	@include grid-column(1, $set--one-column);
+	width: 100%;
+	margin: 20px auto;
+
+	.search-input-area{
 		@include grid-container;
 
-		width: 25%;
-		display: inline-block;
+		h1{
+			@include grid-column(12);	
+		}
+
+
+		.search_form{
+			@include grid-container;
+			@include grid-column(12);	
+
+			input,button{
+				float:left;
+				height: 50px;
+
+			}
+
+			input{
+				width: 90%;
+				@include border-left-radius(6px);
+				@include border-right-radius(0px);
+
+				@include media-query($extra-small){
+					width: 80%;
+				}
+
+				
+			}
+			button{
+				width: 10%;
+				@include border-left-radius(0px);
+				@include border-right-radius(6px);
+				padding-left: 0px;
+				padding-right: 0px;
+
+				.icon {
+					margin: 0px auto;
+					display: block;
+					width: 25px;
+					height: 25px;
+					stroke-color: white;
+					fill: white;
+				}
+
+				@include media-query($extra-small){
+					width: 20%;
+				}
+
+			}
+		}
+
+	
+	}
+}
+
+.artist_listing{
+	width: 100%;
+	margin-top: 20px;
+
+	.artist_row{
+		margin-bottom: 20px;
+
+		@include grid-container;
+
+		@include grid-column(1, $set--one-column);
+
+		@include grid-media($set--two-columns){
+			@include grid-column(1,$set--two-columns);
+		}
+		@include grid-media($set--three-columns){
+			@include grid-column(1,$set--three-columns);
+		}
+		@include grid-media($set--three-columns){
+			@include grid-column(1,$set--three-columns);
+		}
+		@include grid-media($set--four-columns){
+			@include grid-column(1,$set--four-columns);
+		}
 
 		.cover_holder{
-			@include grid-column(1, $custom-grid--artist);
+			@include grid-column(1, $set--one-column);
 			position: relative;
 			vertical-align: middle;
-			padding-top:  modular-scale(2,50%);
+			padding-top:  modular-scale(2,58%);
 			border:1px solid gray;
 
 			.artist_photo{
@@ -38,18 +256,34 @@ body{
 				background-size: cover;
 			}
 
-			.tracks_holder{
+			.tracks-holder{
 				position: absolute;
 				display: none;
 				width: 100%;
 				height: 100%;
+				overflow-x: hidden;
 				top: 0px;
 				left: 0px;
-				background-color: rgba(255,255,255,.5);
+				padding: 10px;
+				background-color: rgba(255,255,255,.9);
 
-				.album_track{
-					font-size: .5em;
+				h1{
+					font-size: .8em;
+					padding: 4px 0px;
+					margin: 4px 0px;
+					border-bottom: 1px solid lightgray;
+				}
+				.album-track{
+					font-size: .7em;
 					display: block;
+					margin-bottom: 3px;
+					padding-bottom: 2px;
+
+					span{
+						margin-right: 6px;
+						font-style: bold;
+						color: $blue-color;
+					}
 				}
 			}
 
@@ -59,54 +293,32 @@ body{
 		}
 
 		.artist_name{
-			@include grid-column(1, $custom-grid--artist);
+			@include grid-column(1, $set--one-column);
 			vertical-align: middle;
+
+			.name{
+				margin-top: 6px;
+				border-bottom: 1px solid lightgray;
+				font-size: .8em;
+				text-transform: uppercase;
+				letter-spacing: .1em;
+				line-height: 1.1em;
+				height: 60px;
+				overflow: hidden;
+			}
 		}	
 
 		&.album{
 
-			$album--one-column: (
-			  columns: 1,
-			  gutter: 10px,
-			);
-
-			$album--two-columns: (
-			  columns: 2,
-			  gutter: 10px,
-			  media: 410px,
-			);
-
-			$album--three-columns: (
-			  columns: 3,
-			  gutter: 10px,
-			  media: 728px,
-			);
-
-			$album--four-columns: (
-			  columns: 4,
-			  gutter: 10px,
-			  media: 1024px,
-			);
-
-			@include grid-column(1, $album--one-column);
-
-			@include grid-media($album--two-columns){
-    			@include grid-column(1,$album--two-columns);
-  			}
-  			@include grid-media($album--three-columns){
-    			@include grid-column(1,$album--three-columns);
-  			}
-  			@include grid-media($album--three-columns){
-    			@include grid-column(1,$album--three-columns);
-  			}
-  			@include grid-media($album--four-columns){
-    			@include grid-column(1,$album--four-columns);
-  			}
-
 			.popularity{
 				.release_date{
-					display: block;
+					display: inline-block;
+					padding-top: 8px;
 					float: right;
+					font-size: .8em;
+					text-transform: uppercase;
+					letter-spacing: .1em;
+					line-height: 1.1em;
 				}
 				.review{
 					display: block;
@@ -130,16 +342,28 @@ body{
 				}
 			}
 
-			
-			.show_tracks,.hide_tracks{
-				@include grid-column(1, $custom-grid--artist);
+			.tracks-navigation{
+
 			}
 
 			&.selected{
-				.tracks_holder{
+				.tracks-holder{
 					display: block;
 				}
 			}
+
+			.show_tracks,.hide_tracks{
+				font-size: .7em;
+				padding: 8px;
+				@include border-top-radius(0px);
+				@include border-bottom-radius(0px);
+				@include grid-column(1, $set--one-column);
+			}
+
+			.show_tracks{
+				background-color: gray;
+			}
+
 		}
 	}
 
