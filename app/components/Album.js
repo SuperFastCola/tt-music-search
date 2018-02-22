@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
 import setResults from "../actions";
 import marked from "marked";
+import Track from "./Track";
 import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
 class DiscName extends React.Component{
@@ -14,19 +15,6 @@ class DiscName extends React.Component{
 		render(){
 			return (
 				<h1 key={this.props.unique_key} >Disk {this.props.disc_number}</h1>
-			)
-			
-		}
-}
-
-class Track extends React.Component{
-		constructor(props) {
-			super(props);
-		}
-		render(){
-
-			return (
-				<div key={this.props.unique_key} className="album-track"><span>{this.props.track_number}</span> {this.props.name}</div>
 			)
 			
 		}
@@ -46,6 +34,7 @@ class Album extends React.Component {
 		this.getAdditionalTracks = this.getAdditionalTracks.bind(this)
 		this.hideTracks = this.hideTracks.bind(this)
 		this.createReviewsArea = this.createReviewsArea.bind(this)
+		this.ajaxError = this.ajaxError.bind(this)
 	}
 	getTracks(e){
 		//$(".artist_row.album").removeClass("selected");
@@ -53,17 +42,22 @@ class Album extends React.Component {
 		let album_id = String($(e.currentTarget).data("spot-id"));
 		this.setState({selectedAlbum: album_id});
 		let url =  `${this.props.info.spotify_base}/albums/${album_id}/tracks?limit=20`;
-		sendAjaxRequest(url,this.props.info.token,this.showAlbumTracks);
+		sendAjaxRequest(url,this.props.info.token,this.showAlbumTracks,this.ajaxError);
 	}
 	hideTracks(e){
 		$(e.currentTarget).parent().addClass("selected");
 		this.setState({showTracks:false});
 	}
+	ajaxError(jqXHR, textStatus){
+		console.log(jqXHR)
+		console.log(textStatus)
+		this.props.setAjaxError(jqXHR.responseJSON);
+	}
 	getAdditionalTracks(e){
 		e.stopPropagation();
 		$(e.currentTarget).parent().parent().scrollTop(0);
 		let url = $(e.currentTarget).attr("data-next-url");
-		sendAjaxRequest(url,this.props.info.token,this.showAlbumTracks);
+		sendAjaxRequest(url,this.props.info.token,this.showAlbumTracks,this.ajaxError);
 	}
 	showAlbumTracks(output){
 		let new_tracks = Object.assign({},this.state.tracks,output);
@@ -78,7 +72,7 @@ class Album extends React.Component {
 					if(track.track_number==1 && track.disc_number != null){
 						disc_number = <DiscName key={(track.id + "disc_number" )} unique_key={key_base} disc_number={track.disc_number} />;
 					}
-					return (<div key={String(index) + "holder"} >{disc_number}<Track key={index} unique_key={track.id} track_number={track.track_number} name={track.name} /></div>)
+					return (<div key={String(index) + "holder"} >{disc_number}<Track key={index} unique_key={track.id} track_id={track.id} track_url={track.href} track_number={track.track_number} name={track.name} /></div>)
 				}
 			)}
 			<div className="tracks-navigation">

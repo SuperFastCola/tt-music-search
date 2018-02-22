@@ -368,15 +368,29 @@ h1{
 					border-bottom: 1px solid lightgray;
 				}
 				.album-track{
-					font-size: .7em;
+					font-size: .8em;
 					display: block;
 					margin-bottom: 3px;
 					padding-bottom: 2px;
+					cursor: pointer;
 
 					span{
 						margin-right: 6px;
 						font-style: bold;
 						color: $blue-color;
+					}
+				}
+				.album-track-details{
+
+					margin-bottom: 8px;
+					.popularity{
+						@include grid-container;
+						font-size: .7em !important;
+
+						.duration{
+							float: right;
+						}
+							
 					}
 				}
 			}
@@ -397,7 +411,7 @@ h1{
 				text-transform: uppercase;
 				letter-spacing: .1em;
 				line-height: 1.1em;
-				height: 40px;
+				height: 60px;
 				overflow: hidden;
 
 				&.artist-roster{
@@ -425,38 +439,6 @@ h1{
 			}
 			@include grid-media($set--four-columns){
 				@include grid-column(1,$set--four-columns);
-			}
-
-			.popularity{
-				.release_date{
-					display: inline-block;
-					padding-top: 8px;
-					float: right;
-					font-size: .8em;
-					text-transform: uppercase;
-					letter-spacing: .1em;
-					line-height: 1.1em;
-				}
-				.review{
-					display: block;
-					p{
-						float:left;
-						margin: 0px;
-						padding: 0px;
-
-						span{
-							display: block;
-							opacity: .2;
-
-							&.filled{
-								opacity: 1;
-							}
-								
-						}
-					}
-
-					
-				}
 			}
 
 			.tracks-navigation{
@@ -501,6 +483,38 @@ h1{
 			}
 
 		}
+	}
+}
+
+.popularity{
+	.release_date{
+		display: inline-block;
+		padding-top: 8px;
+		float: right;
+		font-size: .8em;
+		text-transform: uppercase;
+		letter-spacing: .1em;
+		line-height: 1.1em;
+	}
+	.review{
+		display: block;
+		p{
+			float:left;
+			margin: 0px;
+			padding: 0px;
+
+			span{
+				display: block;
+				opacity: .2;
+
+				&.filled{
+					opacity: 1;
+				}
+					
+			}
+		}
+
+		
 	}
 }
 
