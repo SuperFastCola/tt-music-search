@@ -27,7 +27,7 @@ let initiailState = {
 	auth: {
 		url:"https://accounts.spotify.com/authorize",
 		client_id:"ff309ab919044f60b2fbcf76ed9095e5",
-		redirect_uri: String("http://localhost:3000/").replace(/\//g,"%2F"),
+		redirect_uri: String(window.location.origin + "/").replace(/\//g,"%2F"),
 		response_type:"token",
 	}
 }

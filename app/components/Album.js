@@ -9,6 +9,7 @@ import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 class DiscName extends React.Component{
 		constructor(props) {
 			super(props);
+
 		}
 		render(){
 			return (

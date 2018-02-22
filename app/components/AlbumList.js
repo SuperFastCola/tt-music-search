@@ -50,10 +50,12 @@ class AlbumList extends React.Component {
 		
 	    return (
 	    	<div className="artist_listing">
-	    		{typeof target != "undefined" &&
+
+	    		{target != null && target.length>0 ?
 	    		 	target.map((artist,index) => 
-						(<Album key={index} id={index}/>)
+						(<Album key={Math.random() } id={index}/>)
 					)
+	    		: (<div className="no-results">No Albums Found</div>)
 	    		}
 	    	</div>
 	    )

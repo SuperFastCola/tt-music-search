@@ -39,7 +39,6 @@ const rootReducer = function(state=initialState,action) {
      } 
       
       var filtered = null;
-      console.log(action.results);
       if(typeof action.results.artists != "undefined"){
           filtered = action.results.artists;
       }
@@ -50,16 +49,11 @@ const rootReducer = function(state=initialState,action) {
         filtered = action.results; 
       }
       state = Object.assign({}, state, {results: filtered, prev_url: prev_url, next_url: next_url })
-      console.log(state);
       return state;
     
     case "ADD_ALBUM_DETAILS":
-      console.log("ADD_ALBUM_DETAILS");
-      console.log(action.results);
       var new_results = Object.assign({}, state.results, {items: action.results.albums})
-      console.log(new_results);
       state = Object.assign({}, state, {results: new_results})
-      console.log(state);
     return state;
 
     case "SET_TRACKS":

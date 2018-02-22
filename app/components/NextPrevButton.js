@@ -20,8 +20,6 @@ class NextPrevButton extends React.Component {
 		this.props.setResults(output);
 		 $(window).scrollTop(0);
 
-		console.log(this.props.info.category);
-
 		if(this.props.info.category.match(/albums|newreleases/)){
 			this.getAlbumsDetails(output);	
 		}

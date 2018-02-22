@@ -18,7 +18,7 @@ class Artist extends React.Component {
 	}
 	chooseArtist(e){
 		e.preventDefault()
-		let spot_id = this.props.info.results.items[this.props.id].id;
+		let spot_id = this.props.info.results.items[this.props.id].id;		
 		this.props.setArtist(this.props.info.results.items[this.props.id]);
 		this.props.setCategory("albums");
 		this.startSearch(spot_id)
@@ -38,8 +38,10 @@ class Artist extends React.Component {
 			album_ids += album.id + ((index<(output.items.length-1))?",":"");
 		});
 
-		let url =  `${this.props.info.spotify_base}/albums?ids=${album_ids}`;
-		sendAjaxRequest(url,this.props.info.token,this.addAlbumDetailsToResults,this.ajaxError);
+		if(album_ids.match(/\w/)){
+			let url =  `${this.props.info.spotify_base}/albums?ids=${album_ids}`;
+			sendAjaxRequest(url,this.props.info.token,this.addAlbumDetailsToResults,this.ajaxError);
+		}
 	}
 
 	setListingData(output){

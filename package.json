@@ -6,7 +6,7 @@
   "//": "To make a production version please use 'npm run-script build' - 'npm build' does nothing",
   "scripts": {
     "start": "webpack-dev-server --env.dev --open --watch --progress --colors",
-    "build": "webpack  --progress --colors"
+    "build": "webpack --define process.env.NODE_ENV='\"production\"' --progress --colors"
   },
   "author": "",
   "license": "ISC",
