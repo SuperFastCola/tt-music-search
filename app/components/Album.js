@@ -60,6 +60,7 @@ class Album extends React.Component {
 	}
 	getAdditionalTracks(e){
 		e.stopPropagation();
+		$(e.currentTarget).parent().parent().scrollTop(0);
 		let url = $(e.currentTarget).attr("data-next-url");
 		sendAjaxRequest(url,this.props.info.token,this.showAlbumTracks);
 	}
@@ -81,10 +82,10 @@ class Album extends React.Component {
 			)}
 			<div className="tracks-navigation">
 				{ this.state.tracks.previous != null &&
-					<button className="prev_tracks" data-next-url={this.state.tracks.previous} onClick={this.getAdditionalTracks}>Previous Page</button>
+					<button className="prev_tracks tracks-paging" data-next-url={this.state.tracks.previous} onClick={this.getAdditionalTracks}>&#9664;</button>
 				}
 				{ this.state.tracks.next != null &&
-					<button className="next_tracks" data-next-url={this.state.tracks.next} onClick={this.getAdditionalTracks}>Next Page</button>
+					<button className="next_tracks tracks-paging" data-next-url={this.state.tracks.next} onClick={this.getAdditionalTracks}>&#9658;</button>
 				}
 			</div>
 			</div>
@@ -106,6 +107,20 @@ class Album extends React.Component {
 		}
 
     	return { __html: html };
+  	}
+  	returnArtistsNames(target){
+  		var artists = "";
+  		for(var i =0; i<target.artists.length;i++){
+  			artists+=target.artists[i].name;
+  			if(typeof target.artists[i+1] != "undefined"){
+  				artists+=", ";
+  			}
+  		}
+  		return(
+  			<div className="name artist-roster">
+  				{artists}
+  			</div>
+  		)
   	}
 	render(){
 		var target = null;
@@ -156,6 +171,9 @@ class Album extends React.Component {
 	    			}
 				</div>
 	    		<div className="artist_name album">
+	    			{ this.props.info.category == "newreleases" &&
+	    				this.returnArtistsNames(target)
+	    			}
 	    			<div className="name">{target.name}</div>
 	    			<div className="popularity">
 	    				<span className="review"  dangerouslySetInnerHTML={this.createReviewsArea(stars)}></span>

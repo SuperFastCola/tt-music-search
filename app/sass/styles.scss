@@ -148,6 +148,11 @@ h1{
 	 border-left: 1px solid lightgray;
 	 @include transformXY(-50%,-50%);
 
+	 @include media-query($extra-small){
+	 	width: 100%;
+	 	border:0px;
+	 }
+
 	 h1{
 	 	width: 70%;
 	 	margin: 0 auto 20px; 
@@ -156,8 +161,6 @@ h1{
 
 .search-area{
 	@include grid-container;
-	@include grid-column(1, $set--one-column);
-	width: 100%;
 	margin: 20px auto;
 
 	.search-input-area{
@@ -189,36 +192,92 @@ h1{
 
 				
 			}
-			button{
-				width: 10%;
-				@include border-left-radius(0px);
-				@include border-right-radius(6px);
-				padding-left: 0px;
-				padding-right: 0px;
+		}
+	}
+}
 
-				.icon {
-					margin: 0px auto;
-					display: block;
-					width: 25px;
-					height: 25px;
-					stroke-color: white;
-					fill: white;
-				}
+.artist-title-area{
+	@include grid-container;
+	margin: 20px auto;
 
-				@include media-query($extra-small){
-					width: 20%;
-				}
+	@include media-query($medium-up){
+		width: 96%;
+		border-bottom: 1px solid lightgray;
+		padding-bottom: 15px;
+		margin-bottom: 20px;
+	}
 
-			}
+	h1{
+		@include grid-container;
+		text-align: center;
+		@include grid-column(1,$set--one-column);	
+
+		@include media-query($medium-up){
+			text-align: left;
+			width: 50%;
+			float: left;
+		}
+	}
+	.artist-title-nav{
+		@include grid-container;
+		@include grid-column(1,$set--one-column);	
+		text-align: center;
+
+		@include media-query($medium-up){
+			text-align: right;
+			float: right;
+			width: 10%;
 		}
 
-	
+		button{
+			display: inline-block;
+			width: 49%;
+			&.show-new{
+				@include border-left-radius(6px);
+				@include border-right-radius(0px);	
+				margin-right: 1px;
+			}
+		
+			&.show-search{
+				@include border-left-radius(0px);
+				@include border-right-radius(6px);
+			}	
+		}
 	}
+}
+
+.search_form,.artist-title-area{
+		button{
+			width: 10%;
+			@include border-left-radius(0px);
+			@include border-right-radius(6px);
+			padding-left: 0px;
+			padding-right: 0px;
+
+			.icon {
+				margin: 0px auto;
+				display: block;
+				width: 25px;
+				height: 25px;
+				stroke-color: white;
+				fill: white;
+			}
+
+		@include media-query($extra-small){
+			width: 20%;
+		}
+		}
 }
 
 .artist_listing{
 	width: 100%;
 	margin-top: 20px;
+
+	.no-results{
+		@include grid-container;
+		@include grid-column(1, $set--one-column);
+		text-align: center;
+	}
 
 	.artist_row{
 		margin-bottom: 20px;
@@ -254,6 +313,17 @@ h1{
 				top: 0px;
 				left: 0px;
 				background-size: cover;
+
+				&.none{
+					overflow: hidden;
+					svg{
+						display: block;
+						stroke: rgba(0,0,0,.3);
+						stroke-width: 1;
+						width: 100%;
+						height: 100%;
+					}
+				}
 			}
 
 			.tracks-holder{
@@ -305,7 +375,15 @@ h1{
 				line-height: 1.1em;
 				height: 60px;
 				overflow: hidden;
+
+				&.artist-roster{
+					height: auto;
+					font-weight: bold;
+					border-bottom:0px;
+				}
 			}
+
+
 		}	
 
 		&.album{
@@ -343,7 +421,26 @@ h1{
 			}
 
 			.tracks-navigation{
+				@include grid-container;
+				margin: 6px 0px;
 
+				.tracks-paging{
+					font-size: .7em;
+					width: 49%;
+					padding: 6px 12px 6px 17px;
+
+					&.prev_tracks{
+						float:left;
+						@include border-left-radius(6px);
+						@include border-right-radius(0px);
+
+					}
+					&.next_tracks{
+						float:right;
+						@include border-left-radius(0px);
+						@include border-right-radius(6px);
+					}
+				}
 			}
 
 			&.selected{
@@ -366,5 +463,24 @@ h1{
 
 		}
 	}
+}
 
+.next-prev-navigation{
+	@include grid-container;
+	text-align: center;
+	div{
+		display: inline-block;
+
+		button{
+			font-size: 1em;
+			margin-left: 4px;
+			margin-right: 4px;
+			padding: 6px 12px;
+
+			p{
+				margin: 0px;
+				padding-left: 6px;
+			}
+		}
+	}
 }

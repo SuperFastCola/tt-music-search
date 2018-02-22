@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import {connect} from 'react-redux';
+import marked from "marked";
 import rootReducer from "../reducers/Spotify";
 import generalActions from "../actions";
 import {sendAjaxRequest} from "../modules/sendAjaxRequest";
@@ -17,6 +18,7 @@ class NextPrevButton extends React.Component {
 	setListingData(output){
 		this.props.setAjaxError(null);
 		this.props.setResults(output);
+		 $(window).scrollTop(0);
 
 		console.log(this.props.info.category);
 
@@ -50,10 +52,28 @@ class NextPrevButton extends React.Component {
 		let url = $(e.currentTarget).attr("data-action-url");
 		sendAjaxRequest(url,this.props.info.token,this.setListingData,this.ajaxError);	
 	}
+	setArrowIcon(text){
+		let arrow_left = "&#9664;";
+		let arrow_right = "&#9658;";
+		let arrow = arrow_right;
+
+		if(text.match(/prev/i)){
+			arrow = arrow_left;
+		}
+
+		let icon = marked(arrow, {sanitize: false});
+    	return { __html: icon };
+		
+	}
 	render(){
+		var arrow_class = "next-button";
+		if(this.props.text.match(/previous/i)){
+			arrow_class = "prev-button";
+		}
+
 	    return (
 	    	<div>
-	    		<a data-action-url={this.props.url} className="next-button" onClick={this.getAnotherSet}>{this.props.text}</a>
+	    		<button data-action-url={this.props.url} className={arrow_class} onClick={this.getAnotherSet} dangerouslySetInnerHTML={this.setArrowIcon(this.props.text)}></button>
 	    	</div>
 	    )
   }

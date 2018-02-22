@@ -16,10 +16,11 @@ class ArtistList extends React.Component {
 		}
 	    return (
 	    	<div className="artist_listing">
-	    		{target != null &&
+	    		{target != null && target.length>0 ?
 	    		 	target.map((artist,index) => 
 						(<Artist key={index} id={index}/>)
 					)
+	    		: (<div className="no-results">No Results Found</div>)
 	    		}
 	    	</div>
 	    )
