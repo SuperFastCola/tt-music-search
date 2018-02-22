@@ -84,7 +84,7 @@ class Artist extends React.Component {
 		
 		if(target != null){
 			return (
-		    	<div className="artist_row" data-spot-id={target.id} onClick={this.chooseArtist}>
+		    	<div className="artist_row artist-listing" data-spot-id={target.id} onClick={this.chooseArtist}>
 		    		<div className="cover_holder">
 						<div className={`artist_photo ${noPhoto}`} style={style}>
 							{noPhoto != null &&

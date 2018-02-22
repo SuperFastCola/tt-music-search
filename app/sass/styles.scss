@@ -307,6 +307,22 @@ h1{
 			@include grid-column(1,$set--four-columns);
 		}
 
+		&.artist-listing{
+			.cover_holder{
+				@include grid-column(7);
+				padding-top:  modular-scale(2,30%);
+			}
+			.artist_name{
+				@include grid-column(5);
+
+				.name{
+					height: auto;
+					padding-bottom: 8px;
+					text-align: right;
+				}
+			}
+		}
+
 		.cover_holder{
 			@include grid-column(1, $set--one-column);
 			position: relative;
@@ -393,6 +409,23 @@ h1{
 		}	
 
 		&.album{
+
+			@include grid-container;
+
+			@include grid-column(1, $set--one-column);
+
+			@include grid-media($set--two-columns){
+				@include grid-column(1,$set--two-columns);
+			}
+			@include grid-media($set--three-columns){
+				@include grid-column(1,$set--three-columns);
+			}
+			@include grid-media($set--three-columns){
+				@include grid-column(1,$set--three-columns);
+			}
+			@include grid-media($set--four-columns){
+				@include grid-column(1,$set--four-columns);
+			}
 
 			.popularity{
 				.release_date{
