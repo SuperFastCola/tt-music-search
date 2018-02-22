@@ -6,7 +6,7 @@ class Error extends React.Component {
 	}
 	render(){
 	    return (
-	    	<div>{this.props.errorText}</div>
+	    	<div className="searchError">{this.props.errorText}</div>
 	    )
   }
 }

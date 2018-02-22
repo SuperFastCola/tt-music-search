@@ -135,31 +135,29 @@ class Search extends React.Component {
 	    	{ this.props.info.selected_artist == null && this.searchArea() }
 	    	{ this.props.info.selected_artist != null && this.showArtistName() }
 
-	    	{this.props.info.next_url != null &&
-		    	(<div className="next-prev-navigation">
-			    	{this.props.info.prev_url != null &&
-			    		<NextPrevButton url={this.props.info.prev_url} text="Previous" />
-			    	}
-			    	{this.props.info.next_url != null &&
-			    		<NextPrevButton url={this.props.info.next_url} text="Next" />
-			    	}
-		    	</div>)
-	    	}
+	    	<div className="next-prev-navigation">
+		    	{this.props.info.prev_url != null &&
+		    		<NextPrevButton url={this.props.info.prev_url} text="Previous" />
+		    	}
+		    	{this.props.info.next_url != null &&
+		    		<NextPrevButton url={this.props.info.next_url} text="Next" />
+		    	}
+	    	</div>
+	    	
 	    	
 	    	{ this.props.info.results != null && 
 				listing
 	    	}
 
-	    	{this.props.info.next_url != null &&
-		    	(<div className="next-prev-navigation">
-			    	{this.props.info.prev_url != null &&
-			    		<NextPrevButton url={this.props.info.prev_url} text="Previous" />
-			    	}
-			    	{this.props.info.next_url != null &&
-			    		<NextPrevButton url={this.props.info.next_url} text="Next" />
-			    	}
-		    	</div>)
-	    	}
+	    	<div className="next-prev-navigation">
+		    	{this.props.info.prev_url != null &&
+		    		<NextPrevButton url={this.props.info.prev_url} text="Previous" />
+		    	}
+		    	{this.props.info.next_url != null &&
+		    		<NextPrevButton url={this.props.info.next_url} text="Next" />
+		    	}
+	    	</div>
+
 	    	</div>
 
 	    )

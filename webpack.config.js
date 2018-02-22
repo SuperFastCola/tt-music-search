@@ -1,3 +1,6 @@
+//IMPORTANT!!!
+//'npm run-script build' required to create a build version on command line
+
 //cycles through the process arguments
 var dev=false;
 for( var p in process.argv){

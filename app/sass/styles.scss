@@ -164,6 +164,13 @@ h1{
 	margin: 20px auto;
 	padding-bottom: 20px;
 
+	.searchError{
+		margin-bottom: 10px;
+		color: red;
+		text-transform: uppercase;
+		letter-spacing: .1em;
+	}
+
 	.search-input-area{
 		@include grid-container;
 
@@ -466,6 +473,8 @@ h1{
 
 .next-prev-navigation{
 	@include grid-container;
+	clear:both;
+	float:none;
 	text-align: center;
 	div{
 		display: inline-block;
