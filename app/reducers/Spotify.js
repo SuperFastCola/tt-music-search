@@ -14,6 +14,7 @@ const rootReducer = function(state=initialState,action) {
       return state;
     case "SET_RESULTS":
     
+    //get the next or previous url property for paging in curretn category
      let next_url = null;
      let prev_url = null;
      if(String(state.category).match(/artists|albums/i)){
@@ -38,6 +39,7 @@ const rootReducer = function(state=initialState,action) {
        }
      } 
       
+      //combine the results into an item array on the results property in redux store
       var filtered = null;
       if(typeof action.results.artists != "undefined"){
           filtered = action.results.artists;

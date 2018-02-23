@@ -15,6 +15,7 @@ class App extends React.Component {
 		this.parseToken();
 	}
 	parseToken(){
+		//parse the token from attachedto the callback url after Spotify Login
 		let token = String(window.location.href).match(/access_token=(.*)&token_type/);
 		if(token != null){
 			this.props.setTheToken(token[1]);
@@ -43,18 +44,6 @@ class App extends React.Component {
 	    }
   }
 }
-
-class HelloMessage extends React.Component {
-  render() {
-    return <div>Hi {this.props.name}!</div>;
-  }
-};
-
-class Hey extends React.Component {
-  render() {
-    return <div>Hey {this.props.name}!</div>;
-  }
-};
 
 const mapStateToProps = function(state){
 	return {"info":state};		

@@ -5,6 +5,8 @@ import rootReducer from "../reducers/Spotify";
 import marked from "marked";
 import {sendAjaxRequest} from "../modules/sendAjaxRequest";
 
+//todo: toggle track display
+//show artists and other details
 class TrackInfo extends React.Component{
 		constructor(props) {
 			super(props);
