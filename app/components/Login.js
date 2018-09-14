@@ -17,14 +17,35 @@ class Login extends React.Component {
 	goToSpotify(e){
 		window.location = this.props.info.auth.fullurl;
 	}
-	render() {
-	    return (
+	tryAgain(e){
+		window.location = "/";
+	}
+	showNormalLogin(){
+  		return (
 	    	<div className="login-area">
-	    	<h1>Please Login To Spotify to use use the Web API</h1>
-	    		<button onClick={this.goToSpotify}>Login</button>
+	    	<h1>Logging into Spotify to use the Web API</h1>
 	    	</div>
 	    )
-  }
+	}
+	showErrorLogin(){
+		return (
+	    	<div className="login-area">
+	    	<h1>There seems to be an error with logging in</h1>
+	    	<button onClick={this.goToSpotify}>Login</button>
+	    	<button onClick={this.tryAgain}>Try Again</button>
+	    	</div>
+	    )
+	}
+	render() {
+		const ajaxError = this.props.info.error;		
+	   
+		if(ajaxError != null){
+			return this.showErrorLogin();
+		}
+		else{
+			return this.showNormalLogin();
+		}
+  	}
 }
 
 

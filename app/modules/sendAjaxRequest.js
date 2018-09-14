@@ -1,9 +1,14 @@
 import $ from 'jquery';
 export const sendAjaxRequest = (url, token, callback, errorHandler) => {
 	var ajaxobj = {};
-	ajaxobj.setHeaderForAjax = function(xhr){
- 		xhr.setRequestHeader("Authorization", "Bearer " + token );
- 	}
+
+	if(token != null){
+		ajaxobj.setHeaderForAjax = function(xhr){
+ 			xhr.setRequestHeader("Authorization", "Bearer " + token );
+ 		}	
+ 		ajaxobj.setHeaderForAjax = ajaxobj.setHeaderForAjax.bind(this);
+	}
+	
  	ajaxobj.ajaxError = function(jqXHR, textStatus){
  		console.log(jqXHR);
  		console.log(textStatus);
@@ -11,7 +16,6 @@ export const sendAjaxRequest = (url, token, callback, errorHandler) => {
 		return error;
  	}
 
-	ajaxobj.setHeaderForAjax = ajaxobj.setHeaderForAjax.bind(this);
 	ajaxobj.ajaxError = ajaxobj.ajaxError.bind(this);
 	ajaxobj.request = $.ajax({
 			url: url,

@@ -6,19 +6,22 @@ import { createStore } from "redux";
 import {connect} from 'react-redux';
 import rootReducer from "../reducers/Spotify";
 import setToken from "../actions";
+import {sendAjaxRequest} from "../modules/sendAjaxRequest";
+
  
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.parseToken = this.parseToken.bind(this);
+		this.ajaxError = this.ajaxError.bind(this);
 	}
 	componentDidMount() {
-		this.parseToken();
+		sendAjaxRequest(this.props.info.auth.token_path,null,this.parseToken,this.ajaxError);
 	}
-	parseToken(){
+	parseToken(output){
 		//parse the token from attachedto the callback url after Spotify Login
-		let token = String(window.location.href).match(/access_token=(.*)&token_type/);
-		if(token != null){
-			this.props.setTheToken(token[1]);
+		if(output.entry){
+			this.props.setTheToken(output.entry);
 		}	
 	}
 	showLogin(){
@@ -34,6 +37,9 @@ class App extends React.Component {
 	    	<Search/>
 	    	</div>
 	    )
+	}
+	ajaxError(jqXHR, textStatus){
+		this.props.setAjaxError(textStatus);
 	}
 	render() {
 	    if(this.props.info.token!=null && this.props.info.error==null){
@@ -56,6 +62,10 @@ const mapStateToProps = function(state){
         },
         errorAlert: () => {
         	dispatch({type:"ALL"})
+        },
+        setAjaxError: (error) => {
+        	console.log("---",error);
+        	dispatch({type:"SET_AJAX_ERROR","error":error})
         }
     })
 }
