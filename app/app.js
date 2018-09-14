@@ -26,7 +26,7 @@ let initiailState = {
 	},
 	auth: { //for login
 		url:"https://accounts.spotify.com/authorize",
-		token_path: "https://57zo7eoil7.execute-api.us-east-1.amazonaws.ccom/prod/stagedoor",
+		token_path: "https://57zo7eoil7.execute-api.us-east-1.amazonaws.com/prod/stagedoor",
 		client_id:"ff309ab919044f60b2fbcf76ed9095e5",
 		redirect_uri: String(window.location.origin + "/").replace(/\//g,"%2F"),
 		response_type:"token",

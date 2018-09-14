@@ -16,10 +16,21 @@ class App extends React.Component {
 		this.ajaxError = this.ajaxError.bind(this);
 	}
 	componentDidMount() {
-		sendAjaxRequest(this.props.info.auth.token_path,null,this.parseToken,this.ajaxError);
+		if(!this.parseTokenFromURL()){
+			sendAjaxRequest(this.props.info.auth.token_path,null,this.parseToken,this.ajaxError);
+		}
 	}
+
+	parseTokenFromURL(){
+		let token = String(window.location.href).match(/access_token=(.*)&token_type/);
+		if(token != null){
+			this.props.setTheToken(token[1]);
+			return true;
+     	}
+     	return false;
+	}
+
 	parseToken(output){
-		//parse the token from attachedto the callback url after Spotify Login
 		if(output.entry){
 			this.props.setTheToken(output.entry);
 		}	
